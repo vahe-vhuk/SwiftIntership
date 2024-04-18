@@ -2,81 +2,84 @@
 //  Template.swift
 //  IntershipTask
 //
-//  Created by Picsart Academy on 16.04.24.
+//  Created by Picsart Academy on 18.04.24.
 //
 
 import Foundation
 import SwiftUI
 
 
-// Template view to display blocks
 struct Template: View {
     @Binding var count: Int
+    
+    @State var sizes: Array<UnitSize> = Array(repeating: .none, count: 11)
+    @State var cords: Array<[CGFloat]> = Array(repeating: [0, 0], count: 11)
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            if count == 1 {
-                HBlockStack(min: 1, max: 1, size: .landscape)
-            }
-            else if count == 2 {
-                HBlockStack(min: 1, max: 1, size: .big)
-                HBlockStack(min: 2, max: 2, size: .big)
-            }
-            else if count == 3 {
-                HBlockStack(min: 1, max: 1, size: .big)
-                HBlockStack(min: 2, max: 3, size: .medium)
-            }
-            else if count == 4 {
-                HBlockStack(min: 1, max: 1, size: .big)
-                HBlockStack(min: 2, max: 3, size: .medium)
-                HBlockStack(min: 4, max: 4, size: .medium)
-            }
-            else if count == 5 {
-                HBlockStack(min: 1, max: 1, size: .big)
-                HBlockStack(min: 2, max: 3, size: .medium)
-                HBlockStack(min: 4, max: 5, size: .medium)
-            }
-            else if count == 6 {
-                HBlockStack(min: 1, max: 2, size: .medium)
-                HBlockStack(min: 3, max: 4, size: .medium)
-                HBlockStack(min: 5, max: 6, size: .medium)
-            }
-            else if count == 7 {
-                HBlockStack(min: 1, max: 2, size: .medium)
-                HBlockStack(min: 3, max: 4, size: .medium)
-                HBlockStack(min: 5, max: 6, size: .medium)
-                HBlockStack(min: 7, max: 7, size: .small)
-            }
-            else if count == 8 {
-                HBlockStack(min: 1, max: 2, size: .medium)
-                HBlockStack(min: 3, max: 4, size: .medium)
-                HBlockStack(min: 5, max: 6, size: .medium)
-                HBlockStack(min: 7, max: 8, size: .small)
-            }
-            else if count == 9 {
-                HBlockStack(min: 1, max: 1, size: .big)
-                HBlockStack(min: 2, max: 3, size: .medium)
-                HBlockStack(min: 4, max: 7, size: .small)
-                HBlockStack(min: 8, max: 9, size: .small)
-            }
-            else if count == 10 {
-                HBlockStack(min: 1, max: 1, size: .big)
-                HBlockStack(min: 2, max: 3, size: .medium)
-                HStack(spacing: 0) {
-                    HBlockStack(min: 4, max: 5, size: .small)
-                    HBlockStack(min: 8, max: 9, size: .small)
-                }
-                HStack(spacing: 0) {
-                    HBlockStack(min: 6, max: 7, size: .small)
-                    HBlockStack(min: 10, max: 10, size: .small)
-                }
+        ZStack {
+            ForEach(0..<count+1, id: \.self) { i in
+                Unit(text: "\(i + 1)", size: $sizes[i], cord: $cords[i])
+                    .onTapGesture {
+                        remove(i: i)
+                    }
             }
         }
-        .onTapGesture {
-            if count > 0 {
-                count -= 1
-            }
+        .onChange(of: count) {
+            updateState()
         }
     }
-}
+    
+    
+    func remove(i: Int) {
+        print(sizes)
+        
+        sizes.remove(at: i)
+        sizes.append(.none)
+        cords.remove(at: i)
+        cords.append([0, 0])
+        
+        updateState()
+        
+        count -= 1
+        
+    }
+    
 
+    func updateState() {
+        let options: [Info] = load("Options.json")
+        
+        
+        for i in options[count].sizes.indices {
+            withAnimation(Animation.easeInOut(duration: 0.8)) {
+                sizes[i] = sizeFromInt(size: options[count].sizes[i])
+            }
+        }
+        
+        let baseX: CGFloat = UIScreen.main.bounds.width * 0.06
+        let baseY: CGFloat = 2 // UIScreen.main.bounds.height * 0.001
+        
+        var (stepX, stepY) = sizeValue(size: .small)
+        
+        stepX += 6
+        stepY += 3
+        
+        for i in options[count].cords.indices {
+            var (offX, offY) = sizeValue(size: sizes[i]);
+            offX /= 2
+            offY /= 2
+            
+            let factorX: CGFloat = CGFloat(options[count].cords[i][0])
+            let factorY: CGFloat = CGFloat(options[count].cords[i][1])
+            
+            let X = baseX + stepX * factorX + offX
+            let Y = baseY + stepY * factorY + offY
+            
+            withAnimation(Animation.easeInOut(duration: 0.8)) {
+                cords[i] = [X, Y]
+            }
+        }
+        
+        
+        
+    }
+}

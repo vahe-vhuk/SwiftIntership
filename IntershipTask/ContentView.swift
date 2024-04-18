@@ -1,18 +1,10 @@
-//
-//  ContentView.swift
-//  IntershipTaskTest
-//
-//  Created by Picsart Academy on 16.04.24.
-//
-
-import SwiftUI
 import SwiftUI
 
 
-// Main ContentView
+
 struct ContentView: View {
     @State var count: Int = 0
-    
+
     var body: some View {
         VStack {
             Template(count: $count)
@@ -24,10 +16,8 @@ struct ContentView: View {
     }
 }
 
-
-
-
-
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

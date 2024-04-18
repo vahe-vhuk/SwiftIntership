@@ -2,7 +2,7 @@
 //  Controller.swift
 //  IntershipTask
 //
-//  Created by Picsart Academy on 16.04.24.
+//  Created by Picsart Academy on 18.04.24.
 //
 
 import Foundation
@@ -25,14 +25,17 @@ struct ButtonText: View {
     }
 }
 
-// Controller view with add and remove buttons
+
+
+
+
 struct Controller: View {
     @Binding var count: Int
     
     var body: some View {
         HStack(spacing: 100) {
             Button(action: {
-                withAnimation(Animation.easeInOut(duration: 0.3) ) {
+                withAnimation(Animation.linear(duration: 0.3) ) {
                     if count < 10 {
                         count += 1
                     }
@@ -42,10 +45,8 @@ struct Controller: View {
             }
             
             Button(action: {
-                withAnimation(Animation.easeInOut(duration: 0.3) ) {
-                    if count > 0 {
-                        count -= 1
-                    }
+                if count > 0 {
+                    count -= 1
                 }
             }) {
                 ButtonText(text: "Remove", color: .red)
@@ -54,3 +55,4 @@ struct Controller: View {
         .padding(.vertical, 20)
     }
 }
+
