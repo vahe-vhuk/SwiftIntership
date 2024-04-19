@@ -1,9 +1,9 @@
 # Development of an Online Meeting Application Simulation
 
-#Objective: 
+## Objective: 
 Create a simulated version of an online meeting application (such as Google Meet, Zoom, Microsoft Teams, etc.) featuring a layout engine for participant join and leave actions.
 
-#Requirements:
+## Requirements:
 1. Single Screen Layout: The application should consist of a single screen with two buttons at the bottom: 'Add' and 'Remove'.
 2. Participant Management:
    - Add Button: On clicking 'Add', sequentially add participants to the screen, with one participant per click.
@@ -14,7 +14,7 @@ Create a simulated version of an online meeting application (such as Google Meet
 5. Participant Layout: Arrange participant positions according to a predefined schema.
 6. Participant Limit: The maximum number of participants allowed is 10.
 
-#Additional Information:
+## Additional Information:
 - Each participant’s area is represented by a standard UIView (iOS), assigned a unique identifier.
 - You’re free to keep a configuration file like a JSON file and hardcode every position coordinate there. Then read coordinates and render to the screen.
 - Keep a consistent spatial distance between participants as per your design.
@@ -23,7 +23,7 @@ Create a simulated version of an online meeting application (such as Google Meet
 - Don’t use layout constraints.
 - Once a participant is added to the screen, their unique identifier must remain constant throughout their lifecycle in the application. Reordering participants should not change their identifiers.
 
-#Evaluation Criteria:
+## Evaluation Criteria:
 - The application will be excluded from evaluation if it fails to compile.
 - Failure to adhere to the layout schema for any number of participants will result in a negative assessment.
 - Any programming errors encountered during operation will be considered a fault.
